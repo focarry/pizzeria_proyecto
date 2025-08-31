@@ -28,11 +28,10 @@ class Comprador():
 
     }
     
-    def __init__(self,nombre, apellido):
+    def __init__(self,nombre):
         self.nombre= nombre
-        self.apellido= apellido
         self.idcomprador= Comprador.next_id #se añade un id al comprador nuevo 
-        Comprador.compradores[self.idcomprador]= [nombre,apellido]  #añade id + nombre y apellido al diccionario
+        Comprador.compradores[self.idcomprador]= [nombre]  #añade id + nombre y apellido al diccionario
         Comprador.next_id+=1 #se cambia el proximo id a añadir
         
 #definimos un "envio"
@@ -73,6 +72,14 @@ class Pagos():
 
 class Registros():
     cantidad_de_compradores= Comprador.compradores
+    
+    def guardar_id_clientes(self, id, nombredecliente):
+        Registros.cantidad_de_compradores[id]=[{"nombre":nombredecliente}]
+    def guardar_compra(self,id_de_compra,id_de_pizzas,id_cliente,idenvio):
+        Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"pizzas":[id_de_pizzas]}
+        Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"envio":idenvio}
+    
+    
     cantidaddepizzas=Pizza.lista_de_pizzas
     cantidad_de_compras= Compra.compras
     
@@ -80,20 +87,22 @@ class Registros():
 class Venta():
     modo_depago=True
     def registrar_compra(self, nombrecomprador,cantidadpizza,envio=bool,mododepago=bool, idcliente):
+        
+        #registra el comprador con su id 
+    
+        if idcliente in Registros.cantidad_de_compradores:
+            comprador1=
+            comprador1.idcomprador= idcliente
+        
+        comprador1=Comprador(nombrecomprador)
+        idcomprador=comprador1.idcomprador
+        
         #registra la compra conm su id y nombre de comprador
         venta1=Compra()
         venta1.registrar_comprador(nombrecomprador)
         idcompra=venta1.idcompra
         
         
-        #registra el comprador con su id 
-    
-        if idcliente in Comprador.compradores:
-            comprador1=
-            comprador1.idcomprador= idcliente
-        
-        comprador1=Comprador(nombrecomprador)
-        idcomprador=comprador1.idcomprador
         
         #registra una pizza con su id
         pizzas=0
