@@ -78,8 +78,8 @@ class Registros():
         if id_cliente not in Registros.cantidad_de_compradores:
             Registros.cantidad_de_compradores[id_cliente]={"nombre":nombredecliente,"compras":{}}
         Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"pizzas":[id_de_pizzas]}
-    def guardar_envio(id_de_cliente,id_de_compra,id_de_envio):
-        Registros.cantidad_de_compradores[id_de_cliente]["compras"][id_de_compra]={"envio":id_de_envio}
+    def guardar_envio(self,id_decliente,id_decompra,id_de_envio):
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra]={"envio":id_de_envio}
     cantidaddepizzas=Pizza.lista_de_pizzas
     cantidad_de_compras= Compra.compras
     
@@ -97,21 +97,21 @@ class Venta():
             pizza1=Pizza()
             idpizzas.append(pizza1.idpizza)
             costodepizzas+=pizza1.precio
-        #registra un envio con su id y su costo
-        costoenvio=0
-        idenvio= ""
-        while envio==True:
-            envio1=Envios()
-            costoenvio=envio1.precio_de_envio
-            idenvio=envio1.id_envio
+        
         #registra la compra conm su id y nombre de comprador
         venta1=Compra()
         idcompra=venta1.idcompra
         registrar=Registros()
         
+        costoenvio=0
+        idenvio= ""
         if envio==True:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
-            registrar.guardar_envio(idcompra,idcliente,idenvio)
+            #si hay envio se crea, primero se genera la compra y demas, luego el envio para no sobrescribir
+            envio1=Envios()
+            costoenvio=envio1.precio_de_envio
+            idenvio=envio1.id_envio
+            registrar.guardar_envio(idcliente,idcompra,idenvio)
         else:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
         
@@ -122,14 +122,20 @@ class Venta():
         pago1.RegistrarPago(monto,mododepago)
 
         print(f"El cliente: {nombrecomprador}",
+              "\n-------------------------------------------"
               f"\nTiene la cantidad de: {cantidadpizza} pizzas",
+              "\n-------------------------------------------"
               f"\nEl total a pagar es: {monto}",
+              "\n-------------------------------------------"
               f"\nSu id de compra es: {idcompra}"
+              "\n-------------------------------------------"
               f"\nSu id de comprador es: {idcliente}"
+              "\n-------------------------------------------"
               f"\nEl id de su/sus pizza/s es: {idpizzas}"
-              
               "\n-------------------------------------------")
-        
+        if envio==True:
+            print(f"El id de su envio es {idenvio}",
+                  "\n|||||||||||||||||||||||||||||||||||||")
 
 
 compra1=Venta()
