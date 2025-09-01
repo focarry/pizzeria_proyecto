@@ -38,10 +38,11 @@ class Comprador():
 class Envios():
     precio_de_envio=500
     next_id= 0
+    envios=[]
     def __init__(self):
         self.id_envio= Envios.next_id #añade un id al envio
         Envios.next_id+=1 #cambia id proximo a añadir
-
+        Envios.envios.append(self.id_envio)
 
 # definir una compra 
 class Compra():
@@ -77,7 +78,8 @@ class Registros():
         Registros.cantidad_de_compradores[id]=[{"nombre":nombredecliente}]
     def guardar_compra(self,id_de_compra,id_de_pizzas,id_cliente,idenvio):
         Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"pizzas":[id_de_pizzas]}
-        Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"envio":idenvio}
+        while idenvio in Envios.envios:
+            Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"envio":idenvio}
     
     
     cantidaddepizzas=Pizza.lista_de_pizzas
@@ -86,43 +88,38 @@ class Registros():
     
 class Venta():
     modo_depago=True
-    def registrar_compra(self, nombrecomprador,cantidadpizza,envio=bool,mododepago=bool, idcliente):
+    def registrar_compra(self, nombrecomprador,cantidadpizza,envio,mododepago, idcliente):
         
         #registra el comprador con su id 
-    
-        if idcliente in Registros.cantidad_de_compradores:
-            comprador1=
-            comprador1.idcomprador= idcliente
-        
-        comprador1=Comprador(nombrecomprador)
-        idcomprador=comprador1.idcomprador
-        
-        #registra la compra conm su id y nombre de comprador
-        venta1=Compra()
-        venta1.registrar_comprador(nombrecomprador)
-        idcompra=venta1.idcompra
-        
-        
-        
+        idcomprador=""
+        if idcliente not in Registros.cantidad_de_compradores:
+            comprador1=Comprador(nombrecomprador)
+            idcomprador=comprador1.idcomprador
+        else:
+            idcomprador= idcliente
         #registra una pizza con su id
-        pizzas=0
         idpizzas=[]     
         costodepizzas=0
         for i in range(cantidadpizza):
             pizza1=Pizza()
             idpizzas.append(pizza1.idpizza)
-            pizzas==pizza1.cantidad_de_pizzas
             costodepizzas+=pizza1.precio
         #registra un envio con su id y su costo
         costoenvio=0
         idenvio= ""
-        if envio==True:
+        while envio==True:
             envio1=Envios()
             costoenvio=envio1.precio_de_envio
             idenvio=envio1.id_envio
-            
-        else:
-            pass
+        #registra la compra conm su id y nombre de comprador
+        venta1=Compra()
+        idcompra=venta1.idcompra
+        registrar=Registros()
+        registrar.guardar_compra(idcompra,idpizzas,idcomprador,idenvio)
+        
+        
+        
+        
         #registra un tipo de pago
         pago1=Pagos()
         monto=costodepizzas+costoenvio
@@ -140,17 +137,8 @@ class Venta():
 
 
 compra1=Venta()
-compra1.registrar_compra("yoel flores",2,False,False)
-compra2=Venta()
-compra2.registrar_compra("Pedro cataluña,rashford",6,True,False)
-
-compra3= Venta()
-compra3.registrar_compra("wawi rodriguez,lorenzo",11,True,False)
-compra4= Venta()
-compra4.registrar_compra("wawi rodriguez,lorenzo",11,True,False)      
-
+compra1.registrar_compra("yoel flores",2,True,False,1)
 
 
 print (f"la cantida de compradores con sus id son {Registros.cantidad_de_compradores}"
-        f"\n la cantidad de pizzas con sus id son {Registros.cantidaddepizzas}"
         f"\n la cantidad de Compras son {Registros.cantidad_de_compras}")
