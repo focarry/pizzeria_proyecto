@@ -73,10 +73,9 @@ class Pagos():
 
 class Registros():
     cantidad_de_compradores= Comprador.compradores
-       
+        
     def guardar_compra(self,id_de_compra,id_de_pizzas,id_cliente,nombredecliente):
-        if id_cliente not in Registros.cantidad_de_compradores:
-            Registros.cantidad_de_compradores[id_cliente]={"nombre":nombredecliente,"compras":{}}
+        
         Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"pizzas":[id_de_pizzas]}
     def guardar_envio(self,id_decliente,id_decompra,id_de_envio):
         Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra]={"envio":id_de_envio}
@@ -88,7 +87,10 @@ class Venta():
     modo_depago=True
     def registrar_compra(self, nombrecomprador,cantidadpizza,envio,mododepago,idcliente):
         
-        #registra el comprador con su id 
+        #registra el comprador con su id
+        if idcliente not in Registros.cantidad_de_compradores:
+            comprador1=Comprador(nombrecomprador)
+            idcliente=comprador1.idcomprador
         
         #registra una pizza con su id
         idpizzas=[]     
@@ -105,6 +107,8 @@ class Venta():
         
         costoenvio=0
         idenvio= ""
+        
+        #registra compra con envio
         if envio==True:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
             #si hay envio se crea, primero se genera la compra y demas, luego el envio para no sobrescribir
@@ -112,6 +116,7 @@ class Venta():
             costoenvio=envio1.precio_de_envio
             idenvio=envio1.id_envio
             registrar.guardar_envio(idcliente,idcompra,idenvio)
+        #registra compra sin envio
         else:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
         
@@ -139,7 +144,7 @@ class Venta():
 
 
 compra1=Venta()
-compra1.registrar_compra("yoel flores",2,False,False,1)
+compra1.registrar_compra("yoel flores",2,False,False,'')
 compra2=Venta()
 compra2.registrar_compra("Pepe trulepe",3,True,True,"")
 compra3=Venta()
