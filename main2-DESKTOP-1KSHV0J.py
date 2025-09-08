@@ -99,7 +99,7 @@ class Venta():
             pizza1=Pizza()
             idpizzas.append(pizza1.idpizza)
             costodepizzas+=pizza1.precio
-        
+            
         #registra la compra conm su id y nombre de comprador
         venta1=Compra()
         idcompra=venta1.idcompra
