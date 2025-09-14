@@ -75,10 +75,12 @@ class Registros():
     cantidad_de_compradores= Comprador.compradores
         
     def guardar_compra(self,id_de_compra,id_de_pizzas,id_cliente,nombredecliente):
+        if "nombre" not in Registros.cantidad_de_compradores[id_cliente]:
+            Registros.cantidad_de_compradores[id_cliente]={'nombre':nombredecliente,"compras":{}}
+        Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"pizzas":id_de_pizzas}
         
-        Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"pizzas":[id_de_pizzas]}
     def guardar_envio(self,id_decliente,id_decompra,id_de_envio):
-        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra]={"envio":id_de_envio}
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault("envio",id_de_envio)
     cantidaddepizzas=Pizza.lista_de_pizzas
     cantidad_de_compras= Compra.compras
     
@@ -105,10 +107,9 @@ class Venta():
         idcompra=venta1.idcompra
         registrar=Registros()
         
-        costoenvio=0
-        idenvio= ""
-        
         #registra compra con envio
+        costoenvio=0
+        idenvio=''
         if envio==True:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
             #si hay envio se crea, primero se genera la compra y demas, luego el envio para no sobrescribir
@@ -119,7 +120,6 @@ class Venta():
         #registra compra sin envio
         else:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
-        
         
         #registra un tipo de pago
         pago1=Pagos()
@@ -148,8 +148,9 @@ compra1.registrar_compra("yoel flores",2,False,False,'')
 compra2=Venta()
 compra2.registrar_compra("Pepe trulepe",3,True,True,"")
 compra3=Venta()
-compra3.registrar_compra("yoel flores",1,True,False,1)
+compra3.registrar_compra("yoel flores",1,True,False,0)
+compra4=Venta()
+compra4.registrar_compra("Pepe trulepe",1,True,False,1)
 
-
-print (f"la cantida de compradores con sus id son {Registros.cantidad_de_compradores}"
-        f"\n la cantidad de Compras son {Registros.cantidad_de_compras}")
+print (f"la cantidad de compradores con sus id son {Registros.cantidad_de_compradores}"
+        f"\n la cantidad de Compras son {len(Registros.cantidad_de_compras)}")
