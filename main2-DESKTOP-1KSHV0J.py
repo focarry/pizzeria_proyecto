@@ -154,3 +154,5 @@ compra4.registrar_compra("Pepe trulepe",1,True,False,1)
 
 print (f"la cantidad de compradores con sus id son {Registros.cantidad_de_compradores}"
         f"\n la cantidad de Compras son {len(Registros.cantidad_de_compras)}")
+print(f"el comprador {Registros.cantidad_de_compradores[0]["nombre"]}"
+      f"\ntiene {len(Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"])} pizzas compradas:{Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"]}")
