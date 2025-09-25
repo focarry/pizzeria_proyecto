@@ -142,9 +142,16 @@ class Venta():
             print(f"El id de su envio es {idenvio}",
                   "\n|||||||||||||||||||||||||||||||||||||")
 
-
+#interfaz "grafica" por el momento xd
+class Iniciar:
+            hacer=int(input("hola bienvenido a la pizzeria",
+                "\nque deseas hacer?",
+                "\n1:Vender",
+                "\n2:Consultar"))
+            if hacer== 1:
+                
 compra1=Venta()
-compra1.registrar_compra("yoel flores",2,False,False,'')
+compra1.registrar_compra("yoel flores",2,False,False,'')    
 compra2=Venta()
 compra2.registrar_compra("Pepe trulepe",3,True,True,"")
 compra3=Venta()
