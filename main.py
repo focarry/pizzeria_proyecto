@@ -66,10 +66,11 @@ class Pagos():
     efectivo=[]
     transferencia=[]
     def RegistrarPago(self, monto,tipo):
-        if tipo==True:
-            self.efectivo.append(monto)
-        else:
-            self.transferencia.append(monto)
+        match tipo:
+            case 1:
+                self.efectivo.append(monto)
+            case 2:
+                self.transferencia.append(monto)
 
 class Registros():
     cantidad_de_compradores= Comprador.compradores
@@ -83,7 +84,8 @@ class Registros():
         Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault("envio",id_de_envio)
     cantidaddepizzas=Pizza.lista_de_pizzas
     cantidad_de_compras= Compra.compras
-    
+    def guardar_pago(self, idcliente,id_compra,modo_de_pago,monto_de_pago):
+        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault("Modo de pago",modo_de_pago,"Monto",monto_de_pago)
     
 class Venta():
     modo_depago=True
@@ -110,6 +112,7 @@ class Venta():
         #registra compra con envio
         costoenvio=0
         idenvio=''
+        
         if envio==True:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
             #si hay envio se crea, primero se genera la compra y demas, luego el envio para no sobrescribir
@@ -117,39 +120,33 @@ class Venta():
             costoenvio=envio1.precio_de_envio
             idenvio=envio1.id_envio
             registrar.guardar_envio(idcliente,idcompra,idenvio)
+            
         #registra compra sin envio
         else:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
-        
-        #registra un tipo de pago
+        #registra el pago
         pago1=Pagos()
         monto=costodepizzas+costoenvio
         pago1.RegistrarPago(monto,mododepago)
+        registrar.guardar_pago(idcliente,idcompra,mododepago,monto)
 
+        #Impresion de Ticket
         print(f"El cliente: {nombrecomprador}",
               "\n-------------------------------------------"
               f"\nTiene la cantidad de: {cantidadpizza} pizzas",
-              "\n-------------------------------------------"
-              f"\nEl total a pagar es: {monto}",
               "\n-------------------------------------------"
               f"\nSu id de compra es: {idcompra}"
               "\n-------------------------------------------"
               f"\nSu id de comprador es: {idcliente}"
               "\n-------------------------------------------"
               f"\nEl id de su/sus pizza/s es: {idpizzas}"
-              "\n-------------------------------------------")
+              "\n-------------------------------------------"
+              f"\nEl total a pagar es: {monto}",)
         if envio==True:
             print(f"El id de su envio es {idenvio}",
                   "\n|||||||||||||||||||||||||||||||||||||")
 
 #interfaz "grafica" por el momento xd
-class Iniciar:
-            hacer=int(input("hola bienvenido a la pizzeria",
-                "\nque deseas hacer?",
-                "\n1:Vender",
-                "\n2:Consultar"))
-            if hacer== 1:
-                
 compra1=Venta()
 compra1.registrar_compra("yoel flores",2,False,False,'')    
 compra2=Venta()
@@ -162,4 +159,5 @@ compra4.registrar_compra("Pepe trulepe",1,True,False,1)
 print (f"la cantidad de compradores con sus id son {Registros.cantidad_de_compradores}"
         f"\n la cantidad de Compras son {len(Registros.cantidad_de_compras)}")
 print(f"el comprador {Registros.cantidad_de_compradores[0]["nombre"]}"
-      f"\ntiene {len(Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"])} pizzas compradas:{Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"]}")
+      f"\ntiene {len(Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"])} pizzas compradas:{Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"]}") 
+      
