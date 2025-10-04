@@ -1,5 +1,5 @@
 from main import *
-class Inicio:
+def iniciar():
     hacer=int(input("|||||Hola, Bienvenido a la pizzeria Luigi!||||| " \
     "\n-Que deseas hacer?" \
     "\n'1' Comprar " \
@@ -25,4 +25,4 @@ class Inicio:
         consulta=input("Que deseas consultar?:" \
         "\n")
 
-iniciar=Inicio()
+iniciar()
