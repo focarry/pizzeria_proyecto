@@ -1,4 +1,4 @@
-
+from datetime import *
 
 #1 registrar la identidad de pizza y algunas funciones 
 class Pizza():
@@ -73,21 +73,40 @@ class Pagos():
                 self.transferencia.append(monto)
 
 class Registros():
-    cantidad_de_compradores= []
+    cantidad_de_compradores= {
+    }
     cantidaddepizzas=Pizza.lista_de_pizzas
     cantidad_de_compras= Compra.compras
     
     def guardar_compra(self,id_de_compra,id_de_pizzas,id_cliente,nombredecliente):
-        if "nombre" not in Registros.cantidad_de_compradores[id_cliente]:
-            Registros.cantidad_de_compradores[id_cliente]={'nombre':nombredecliente,"compras":{}}
-        Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={"pizzas":id_de_pizzas}
+        if id_cliente not in Registros.cantidad_de_compradores:
+            Registros.cantidad_de_compradores[id_cliente]={
+                'nombre':nombredecliente,
+                "compras":{
+                }
+            }
+        Registros.cantidad_de_compradores[id_cliente]["compras"][id_de_compra]={
+            "pizzas":id_de_pizzas
+        }
         
-    def guardar_envio(self,id_decliente,id_decompra,id_de_envio):
-        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault("envio",id_de_envio)
+    def guardar_envio(self,id_decliente,id_decompra,id_de_envio,monto_de_envio):
+        tiempo= datetime.now
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault(
+            "envio",id_de_envio)
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault(
+            "Monto",monto_de_envio)
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault(
+            "Tiempo",tiempo)
     
     def guardar_pago(self, idcliente,id_compra,modo_de_pago,monto_de_pago):
-        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault("Modo de pago",modo_de_pago)
-        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault("Monto",monto_de_pago)
+        if modo_de_pago==1:
+            modo_de_pago="Efectivo"
+        elif modo_de_pago==2:
+            modo_de_pago="Transferencia"
+        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault(
+            "Modo de pago",modo_de_pago)
+        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault(
+            "Monto",monto_de_pago)
     
     def mostrar_datos_de_comprador(idcomprador):
         return Registros.cantidad_de_compradores[idcomprador]
@@ -100,7 +119,16 @@ class Venta():
     def registrar_compra(self, nombrecomprador,cantidadpizza,envio,mododepago,idcliente):
         
         #registra el comprador con su id
-        while idcliente not in Registros.cantidad_de_compradores:
+        if idcliente.strip() == "":
+                idcliente = None
+        else:
+            try:
+                idcliente = int(idcliente)
+            except ValueError:
+                print("El ID debe ser un número, se creará un nuevo cliente."
+                )
+                idcliente= None
+        if idcliente not in Registros.cantidad_de_compradores:
             comprador1=Comprador(nombrecomprador)
             idcliente=comprador1.idcomprador
         
@@ -127,7 +155,7 @@ class Venta():
             envio1=Envios()
             costoenvio=envio1.precio_de_envio
             idenvio=envio1.id_envio
-            registrar.guardar_envio(idcliente,idcompra,idenvio)
+            registrar.guardar_envio(idcliente,idcompra,idenvio,costoenvio)
             
         #registra compra sin envio
         else:
@@ -152,8 +180,7 @@ class Venta():
         if envio==True:
             print(f"El id de su envio es {idenvio}",
                   "\n|||||||||||||||||||||||||||||||||||||")
-        totalapagar="TOTAL A PAGAR:",monto
-        print(totalapagar)
+        print(f"TOTAL A PAGAR: ${monto}")
 #interfaz "grafica" por el momento xd
 """compra1=Venta()
 compra1.registrar_compra("yoel flores",2,False,False,'')    
