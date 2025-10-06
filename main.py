@@ -73,8 +73,10 @@ class Pagos():
                 self.transferencia.append(monto)
 
 class Registros():
-    cantidad_de_compradores= Comprador.compradores
-        
+    cantidad_de_compradores= []
+    cantidaddepizzas=Pizza.lista_de_pizzas
+    cantidad_de_compras= Compra.compras
+    
     def guardar_compra(self,id_de_compra,id_de_pizzas,id_cliente,nombredecliente):
         if "nombre" not in Registros.cantidad_de_compradores[id_cliente]:
             Registros.cantidad_de_compradores[id_cliente]={'nombre':nombredecliente,"compras":{}}
@@ -82,17 +84,23 @@ class Registros():
         
     def guardar_envio(self,id_decliente,id_decompra,id_de_envio):
         Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault("envio",id_de_envio)
-    cantidaddepizzas=Pizza.lista_de_pizzas
-    cantidad_de_compras= Compra.compras
-    def guardar_pago(self, idcliente,id_compra,modo_de_pago,monto_de_pago):
-        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault("Modo de pago",modo_de_pago,"Monto",monto_de_pago)
     
+    def guardar_pago(self, idcliente,id_compra,modo_de_pago,monto_de_pago):
+        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault("Modo de pago",modo_de_pago)
+        Registros.cantidad_de_compradores[idcliente]["compras"][id_compra].setdefault("Monto",monto_de_pago)
+    
+    def mostrar_datos_de_comprador(idcomprador):
+        return Registros.cantidad_de_compradores[idcomprador]
+    
+    def mostrar_compra(idcomprador,idcompra):
+        return Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra] 
+
 class Venta():
     modo_depago=True
     def registrar_compra(self, nombrecomprador,cantidadpizza,envio,mododepago,idcliente):
         
         #registra el comprador con su id
-        if idcliente not in Registros.cantidad_de_compradores:
+        while idcliente not in Registros.cantidad_de_compradores:
             comprador1=Comprador(nombrecomprador)
             idcliente=comprador1.idcomprador
         
@@ -133,21 +141,21 @@ class Venta():
         #Impresion de Ticket
         print(f"El cliente: {nombrecomprador}",
               "\n-------------------------------------------"
-              f"\nTiene la cantidad de: {cantidadpizza} pizzas",
+              f"\nTiene la cantidad de: {cantidadpizza} pizza/s",
               "\n-------------------------------------------"
-              f"\nSu id de compra es: {idcompra}"
+              f"\nEl id de esta compra es: {idcompra}"
               "\n-------------------------------------------"
               f"\nSu id de comprador es: {idcliente}"
               "\n-------------------------------------------"
-              f"\nEl id de su/sus pizza/s es: {idpizzas}"
-              "\n-------------------------------------------"
-              f"\nEl total a pagar es: {monto}",)
+              f"\nEl id de su/s pizza/s es: {idpizzas}"
+              "\n-------------------------------------------")
         if envio==True:
             print(f"El id de su envio es {idenvio}",
                   "\n|||||||||||||||||||||||||||||||||||||")
-
+        totalapagar="TOTAL A PAGAR:",monto
+        print(totalapagar)
 #interfaz "grafica" por el momento xd
-compra1=Venta()
+"""compra1=Venta()
 compra1.registrar_compra("yoel flores",2,False,False,'')    
 compra2=Venta()
 compra2.registrar_compra("Pepe trulepe",3,True,True,"")
@@ -160,4 +168,4 @@ print (f"la cantidad de compradores con sus id son {Registros.cantidad_de_compra
         f"\n la cantidad de Compras son {len(Registros.cantidad_de_compras)}")
 print(f"el comprador {Registros.cantidad_de_compradores[0]["nombre"]}"
       f"\ntiene {len(Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"])} pizzas compradas:{Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"]}") 
-      
+      """
