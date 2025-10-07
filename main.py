@@ -92,7 +92,7 @@ class Registros():
     def guardar_envio(self,id_decliente,id_decompra,id_de_envio,monto_de_envio):
         tiempo=datetime.datetime.now()
         tiempo=tiempo.strftime('%H:%M')
-        dia=datetime.date.today()
+        dia=str(datetime.date.today())
         
         Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault(
             "envio",{id_de_envio:{}})
@@ -114,6 +114,14 @@ class Registros():
             "Monto",monto_de_pago)
     
     def mostrar_datos_de_comprador(idcomprador):
+        for i in Registros.cantidad_de_compradores[idcomprador]["compras"]:
+            pizza=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["pizzas"]
+            nombre=Registros.cantidad_de_compradores[idcomprador]["nombre"]
+            envio=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["envio"]
+            montodecompra=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["Monto"]
+            mododepago=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["Modo de pago"]
+            return pizza,nombre,envio,montodecompra,mododepago
+
         return Registros.cantidad_de_compradores[idcomprador]
     
     def mostrar_compra(idcomprador,idcompra):
@@ -170,7 +178,7 @@ class Venta():
         costoenvio=0
         idenvio=''
         
-        if envio==True:
+        if envio==1:
             registrar.guardar_compra(idcompra,idpizzas,idcliente,nombrecomprador)
             #si hay envio se crea, primero se genera la compra y demas, luego el envio para no sobrescribir
             envio1=Envios()

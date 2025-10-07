@@ -34,7 +34,10 @@ def iniciar():
                 "\nRespuesta: "))
                 if consulta ==1:
                     id_del_comprador=int(input("Ingrese el id del cliente: "))
-                    print(Registros.mostrar_datos_de_comprador(id_del_comprador))
+                    datos=Registros.mostrar_datos_de_comprador(id_del_comprador)
+                    for i in datos:
+                        print(f"pom pom: {i}")
+                    
                 while consulta ==2:
                     traer=int(input("Que deseas consultar?" \
                     "\n1. Una venta en general" \
