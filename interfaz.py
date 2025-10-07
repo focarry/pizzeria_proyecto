@@ -19,11 +19,11 @@ def iniciar():
             envio=int(input("-Quisieras un delivery?: \nPresiona 1 para SI o 2 para NO \nRespuesta: "))
             print("|||||||||||||||||||||||||||||||||||||||||||||")
             if envio==1:
-                lugar=input("Escribe el lugar de envio")
+                lugar=input("Escribe el lugar de envio: ")
             mododepago=int(input("-Como deseas pagar?: \n 1 Efectivo o 2 Transferencia \nRespuesta: "))
             print("|||||||||||||||||||||||||||||||||||||||||||||")
             venta1=Venta()
-            venta1.registrar_compra(nombre,pizzas,envio,mododepago,id_del_comprador)
+            venta1.registrar_compra(nombre,pizzas,envio,mododepago,id_del_comprador,lugar)
         elif hacer==2:
             while True:
                 print("|||||||||||||||||||||||||||||||||||||")
@@ -34,9 +34,7 @@ def iniciar():
                 "\nRespuesta: "))
                 if consulta ==1:
                     id_del_comprador=int(input("Ingrese el id del cliente: "))
-                    datos=Registros.mostrar_datos_de_comprador(id_del_comprador)
-                    for i in datos:
-                        print(f"pom pom: {i}")
+                    print(Registros.mostrar_datos_de_comprador(id_del_comprador))
                     
                 while consulta ==2:
                     traer=int(input("Que deseas consultar?" \

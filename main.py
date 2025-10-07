@@ -59,9 +59,7 @@ class Compra():
             return True    
         else:
             return False
-    
-        
-
+#definimos la entidad de pagos
 class Pagos():
     efectivo=[]
     transferencia=[]
@@ -72,6 +70,7 @@ class Pagos():
             case 2:
                 self.transferencia.append(monto)
 
+#definimos la entidad de registros
 class Registros():
     cantidad_de_compradores= {
     }
@@ -89,7 +88,7 @@ class Registros():
             "pizzas":id_de_pizzas
         }
         
-    def guardar_envio(self,id_decliente,id_decompra,id_de_envio,monto_de_envio):
+    def guardar_envio(self,id_decliente,id_decompra,id_de_envio,monto_de_envio,lugar):
         tiempo=datetime.datetime.now()
         tiempo=tiempo.strftime('%H:%M')
         dia=str(datetime.date.today())
@@ -102,6 +101,7 @@ class Registros():
             "Hora",tiempo)
         Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra]["envio"][id_de_envio].setdefault(
             "Fecha",dia)
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault("lugar_envio",lugar)
     
     def guardar_pago(self, idcliente,id_compra,modo_de_pago,monto_de_pago):
         if modo_de_pago==1:
@@ -120,7 +120,13 @@ class Registros():
             envio=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["envio"]
             montodecompra=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["Monto"]
             mododepago=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["Modo de pago"]
-            return pizza,nombre,envio,montodecompra,mododepago
+            lugar_envio=Registros.cantidad_de_compradores[idcomprador]["compras"][i]["lugar_envio"]
+            return f"-Nombre: {nombre} \
+                \n-Cantidad de pizzas: {pizza}\
+                \n-Detalles del envio: id{envio}\
+                \n-Monto de la compra: ${montodecompra}\
+                \n-Modo de pago: {mododepago}\
+                \n-Lugar de envio: {lugar_envio}"
 
         return Registros.cantidad_de_compradores[idcomprador]
     
@@ -145,7 +151,7 @@ class Registros():
         return f"-El modo de pago fue en {modo}.\n-El monto de esta compra fue de ${monto}."
 class Venta():
     modo_depago=True
-    def registrar_compra(self, nombrecomprador,cantidadpizza,envio,mododepago,idcliente):
+    def registrar_compra(self, nombrecomprador,cantidadpizza,envio,mododepago,idcliente,lugar):
         
         #registra el comprador con su id
         if idcliente.strip() == "":
@@ -184,7 +190,7 @@ class Venta():
             envio1=Envios()
             costoenvio=envio1.precio_de_envio
             idenvio=envio1.id_envio
-            registrar.guardar_envio(idcliente,idcompra,idenvio,costoenvio)
+            registrar.guardar_envio(idcliente,idcompra,idenvio,costoenvio,lugar)
             
         #registra compra sin envio
         else:
