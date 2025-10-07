@@ -1,4 +1,4 @@
-from datetime import *
+import datetime
 
 #1 registrar la identidad de pizza y algunas funciones 
 class Pizza():
@@ -90,13 +90,18 @@ class Registros():
         }
         
     def guardar_envio(self,id_decliente,id_decompra,id_de_envio,monto_de_envio):
-        tiempo= datetime.now
+        tiempo=datetime.datetime.now()
+        tiempo=tiempo.strftime('%H:%M')
+        dia=datetime.date.today()
+        
         Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault(
-            "envio",id_de_envio)
-        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault(
+            "envio",{id_de_envio:{}})
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra]["envio"][id_de_envio].setdefault(
             "Monto",monto_de_envio)
-        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra].setdefault(
-            "Tiempo",tiempo)
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra]["envio"][id_de_envio].setdefault(
+            "Hora",tiempo)
+        Registros.cantidad_de_compradores[id_decliente]["compras"][id_decompra]["envio"][id_de_envio].setdefault(
+            "Fecha",dia)
     
     def guardar_pago(self, idcliente,id_compra,modo_de_pago,monto_de_pago):
         if modo_de_pago==1:
@@ -112,8 +117,24 @@ class Registros():
         return Registros.cantidad_de_compradores[idcomprador]
     
     def mostrar_compra(idcomprador,idcompra):
-        return Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra] 
-
+        return Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]
+    def mostrar_envio(idcomprador, idcompra,idenvio):
+        
+        monto=Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]["envio"][idenvio]["Monto"]
+        hora=Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]["envio"][idenvio]["Hora"]
+        fecha=Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]["envio"][idenvio]["Fecha"]
+        return f"el monto del envío es ${monto} \n-Fue realizado a las {hora} el {fecha}"
+    def mostrar_pizzas(idcomprador,idcompra):
+        idpizzas=Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]["pizzas"]
+        cantidad=len(Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]["pizzas"])
+        if cantidad==1:
+            return f"-La compra tiene {cantidad} pizza comprada. \n-El id de la pizza es {idpizzas}"
+        else:
+            return f"-La compra tiene {cantidad} pizzas compradas.  \n Los id son {idpizzas}"
+    def mostrar_pagos(idcomprador,idcompra):
+        modo=Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]["Modo de pago"]
+        monto=Registros.cantidad_de_compradores[idcomprador]["compras"][idcompra]["Monto"]
+        return f"-El modo de pago fue en {modo}.\n-El monto de esta compra fue de ${monto}."
 class Venta():
     modo_depago=True
     def registrar_compra(self, nombrecomprador,cantidadpizza,envio,mododepago,idcliente):

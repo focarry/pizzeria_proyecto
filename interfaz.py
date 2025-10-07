@@ -18,6 +18,8 @@ def iniciar():
             print("|||||||||||||||||||||||||||||||||||||||||||||")
             envio=int(input("-Quisieras un delivery?: \nPresiona 1 para SI o 2 para NO \nRespuesta: "))
             print("|||||||||||||||||||||||||||||||||||||||||||||")
+            if envio==1:
+                lugar=input("Escribe el lugar de envio")
             mododepago=int(input("-Como deseas pagar?: \n 1 Efectivo o 2 Transferencia \nRespuesta: "))
             print("|||||||||||||||||||||||||||||||||||||||||||||")
             venta1=Venta()
@@ -38,7 +40,8 @@ def iniciar():
                     "\n1. Una venta en general" \
                     "\n2. Un envio" \
                     "\n3. Una/s pizza/s de una compra especifica" \
-                    "\n4. Volver"
+                    "\n4. Pagos de una compra"
+                    "\n5. Volver"
                     "\nRespuesta: "))
                     match traer:
                         case 1:
@@ -46,12 +49,23 @@ def iniciar():
                             idcompra=int(input("Ingrese el id de la compra: "))
                             print(Registros.mostrar_compra(idcomprador,idcompra))
                         case 2:
-                            Registros.mostrar_envio
+                            idcomprador=int(input("Ingrese id del cliente al que se le ha enviado: "))
+                            idcompra=int(input("Ingrese el id de la compra enviada: "))
+                            idenvio=int(input("Ingrese el id del envío: "))
+                            print(Registros.mostrar_envio(idcomprador,idcompra,idenvio))
+                        case 3:
+                            idcomprador=int(input("Ingrese el id del comprador:"))
+                            idcompra=int(input("Ingrese el id de la compra: "))
+                            print(Registros.mostrar_pizzas(idcomprador,idcompra))
                         case 4:
+                            idcomprador=int(input("Ingrese el id del comprador: "))
+                            idcompra=int(input("Ingreses el id compra: "))
+                            print(Registros.mostrar_pagos(idcomprador,idcompra))
+                        case 5:
                             break
                 if consulta==3:
                     break
         else:
             print("Ha finalizado el programa, Arrivederci!")
             break
-iniciar()
+iniciar() 
