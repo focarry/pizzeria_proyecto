@@ -231,3 +231,6 @@ print (f"la cantidad de compradores con sus id son {Registros.cantidad_de_compra
 print(f"el comprador {Registros.cantidad_de_compradores[0]["nombre"]}"
       f"\ntiene {len(Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"])} pizzas compradas:{Registros.cantidad_de_compradores[0]["compras"][0]["pizzas"]}") 
       """
+'''interfaz grafica(usar un frame work, ellos estan trabajando con javascripy y react o otros con flutter y dart), 
+usar bien los metdoos de clase(con instancias)
+uso de patron repositorio'''
